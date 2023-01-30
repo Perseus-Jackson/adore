@@ -80,7 +80,9 @@ docker_load_images:
 test: ## Run ADORe unit tests
 	mkdir -p .log && \
     cd libadore && \
-	make test | tee "${ROOT_DIR}/.log/libadore_unit_test.log"; exit $$PIPESTATUS
+    make test | tee "${ROOT_DIR}/.log/libadore_unit_test.log"; exit $$PIPESTATUS
+	@git submodule status --recursive > ${ROOT_DIR}/.log/git_inventory.log
+	@printf " %s %s (%s) \n" "$$(git rev-parse HEAD)" "$$(basename $$(git remote get-url origin) | sed "s|.git||g")" "$$(git rev-parse --abbrev-ref HEAD)" >> ${ROOT_DIR}/.log/git_inventory.log
 
 .PHONY: lint 
 lint: ## Run linting for all modules
