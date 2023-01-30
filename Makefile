@@ -50,14 +50,22 @@ _build: \
         build_v2x_if_ros_msg \
         build_adore_if_ros \
         build_adore_if_v2x \
+        build_adore_if_ros_msg \
         docker_storage_inventory_postbuild \
         clean_up 
 
 .PHONY: clean 
-clean: clean_adore_if_ros ## Clean ADORe
+clean: 
+	cd adore_if_ros && make clean
+	cd libadore && make clean
+	cd sumo_if_ros && make clean
+	cd adore_if_ros_msg && make clean
+	cd v2x_if_ros_msg && make clean
+	cd adore_if_v2x && make clean
+	cd plotlabserver && make clean
 
 .PHONY: clean_up
-clean_up: stop_apt_cacher_ng docker_save_images
+clean_up: stop_apt_cacher_ng docker_save_images docker_delete_all_none_tags
 
 .PHONY: docker_storage_inventory_prebuild
 docker_storage_inventory_prebuild:
